@@ -21,12 +21,29 @@ class Character:
             return False
 
     def attack(self, enemy):
+        
         damage_coefficient = 1
-        enemy.health -= self.power
+
+        if enemy.name == "Shadow":
+            my_random = random.randint(1, 10)
+            # 10% of tiime will take damage
+            if my_random <= 1:
+                enemy.health -= self.power
+            else:
+                print("{} not damaged!".format(enemy.name))
+                damage_coefficient = 0
+                
+        else:
+            enemy.health -= self.power
+
+       
+        
         if self.name == "Hero":
             my_random = random.randint(1, 10)
             # 20% of time, double the damage
-            if my_random <= 2:
+            if damage_coefficient == 0:
+                pass
+            elif my_random <= 2:
                 enemy.health -= self.power
                 print("{} did double damage!".format(self.name))
                 damage_coefficient = 2
@@ -60,9 +77,15 @@ class Medic(Character):
         super().__init__(health, power)
         self.name = "Medic"
 
+class Shadow(Character):
+    def __init__ (self, health, power):
+        super().__init__(health, power)
+        self.name = "Shadow"
+
 hero1 = Hero(100,5)
 goblin1 = Goblin(100,2)
 medic1 = Medic(100,2)
+shadow1 = Shadow(100,5)
 
 def main(hero, enemy):
     while enemy.alive() and hero.alive():
@@ -70,7 +93,7 @@ def main(hero, enemy):
         enemy.print_status()
         print()
         print("What do you want to do?")
-        print("1. fight goblin")
+        print("1. fight {}".format(enemy.name))
         print("2. do nothing")
         print("3. flee")
         print("> ", end=' ')
@@ -89,4 +112,4 @@ def main(hero, enemy):
             enemy.attack(hero)
  
 
-main(medic1, goblin1)
+main(hero1, shadow1)
