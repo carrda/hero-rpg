@@ -15,7 +15,9 @@ class Character:
         self.name = 'Generic'
 
     def alive(self):
-        if self.health > 0:
+        if self.name == "Zombie":
+            return True
+        elif self.health > 0:
             return True
         else:
             return False
@@ -54,9 +56,11 @@ class Character:
             if my_random <= 2:
                 enemy.health += 2
                 print("{} recuperated 2 health points.".format(enemy.name))
-        if enemy.health <= 0:
+        if enemy.health <= 0 and enemy.name != "Zombie":
             print("{} is dead.".format(enemy.name))
-        if self.health <= 0:
+        elif enemy.health <= 0 and enemy.name == "Zombie":
+            print("{} never dies!".format(enemy.name))
+        elif self.health <= 0:
             print("{} is dead.".format(self.name))
 
     def print_status(self):
@@ -82,10 +86,16 @@ class Shadow(Character):
         super().__init__(health, power)
         self.name = "Shadow"
 
+class Zombie(Character):
+    def __init__ (self, health, power):
+        super().__init__(health, power)
+        self.name = "Zombie"
+
 hero1 = Hero(100,5)
 goblin1 = Goblin(100,2)
 medic1 = Medic(100,2)
 shadow1 = Shadow(100,5)
+zombie1 = Zombie(20,2)
 
 def main(hero, enemy):
     while enemy.alive() and hero.alive():
@@ -112,4 +122,4 @@ def main(hero, enemy):
             enemy.attack(hero)
  
 
-main(hero1, shadow1)
+main(hero1, zombie1)
