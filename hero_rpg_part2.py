@@ -30,38 +30,44 @@ class Character:
                 enemy.health -= self.power
                 print("{} did double damage!".format(self.name))
                 damage_coefficient = 2
-
         print("{} does {} damage to the {}.".format(self.name, damage_coefficient * self.power, enemy.name))
+        if enemy.name == "Medic":
+            my_random = random.randint(1, 10)
+            # 20% of time, recuperate 2 health points
+            if my_random <= 2:
+                enemy.health += 2
+                print("{} recuperated 2 health points.".format(enemy.name))
         if enemy.health <= 0:
             print("{} is dead.".format(enemy.name))
         if self.health <= 0:
             print("{} is dead.".format(self.name))
+
     def print_status(self):
         print("{} has {} health and {} power.".format(self.name, self.health, self.power))
                   
-
-
 class Hero(Character):
     def __init__ (self, health, power):
         super().__init__(health, power)
         self.name = "Hero"
-
-
-        
 
 class Goblin(Character):
     def __init__ (self, health, power):
         super().__init__(health, power)
         self.name = "Goblin"
 
+class Medic(Character):
+    def __init__ (self, health, power):
+        super().__init__(health, power)
+        self.name = "Medic"
 
-def main():
-    hero1 = Hero(100,5)
-    goblin1 = Goblin(100,2)
+hero1 = Hero(100,5)
+goblin1 = Goblin(100,2)
+medic1 = Medic(100,2)
 
-    while goblin1.alive() and hero1.alive():
-        hero1.print_status()
-        goblin1.print_status()
+def main(hero, enemy):
+    while enemy.alive() and hero.alive():
+        hero.print_status()
+        enemy.print_status()
         print()
         print("What do you want to do?")
         print("1. fight goblin")
@@ -70,7 +76,7 @@ def main():
         print("> ", end=' ')
         raw_input = input()
         if raw_input == "1":
-            hero1.attack(goblin1)
+            hero.attack(enemy)
         elif raw_input == "2":
             pass
         elif raw_input == "3":
@@ -79,8 +85,8 @@ def main():
         else:
             print("Invalid input {}".format(raw_input))
 
-        if goblin1.health > 0:
-            goblin1.attack(hero1)
+        if enemy.health > 0:
+            enemy.attack(hero)
  
 
-main()
+main(medic1, goblin1)
