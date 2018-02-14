@@ -29,6 +29,7 @@ class Character:
         print("{} has {} health and {} power.".format(self.name, self.health, self.power))
                   
 
+
 class Hero(Character):
     def __init__ (self, health, power):
         super().__init__(health, power)
