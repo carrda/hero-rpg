@@ -38,8 +38,7 @@ class Character:
         else:
             enemy.health -= self.power
 
-       
-        
+              
 
         if self.name == "Hero":
             my_random = random.randint(1, 10)
@@ -67,6 +66,9 @@ class Character:
                 print("{} recuperated 2 health points.".format(enemy.name))
         if enemy.health <= 0 and enemy.name != "Zombie":
             print("{} is dead.".format(enemy.name))
+            self.coins += enemy.bounty
+            print("{} collects {} bounty by defeating {}.".format(self.name, enemy.bounty, enemy.name))
+            print("{}'s coin balance is {}.".format(self.name, self.coins))        
         elif enemy.health <= 0 and enemy.name == "Zombie":
             print("{} never dies!".format(enemy.name))
         elif self.health <= 0:
@@ -79,11 +81,13 @@ class Hero(Character):
     def __init__ (self, health, power):
         super().__init__(health, power)
         self.name = "Hero"
+        self.coins = 0
 
 class Goblin(Character):
     def __init__ (self, health, power):
         super().__init__(health, power)
         self.name = "Goblin"
+        self.bounty = 5
 
 class Medic(Character):
     def __init__ (self, health, power):
@@ -94,6 +98,7 @@ class Shadow(Character):
     def __init__ (self, health, power):
         super().__init__(health, power)
         self.name = "Shadow"
+        self.bounty = 2
 
 class Zombie(Character):
     def __init__ (self, health, power):
@@ -104,13 +109,14 @@ class Ogre(Character): # 30% of time damage hero a like amount
     def __init__ (self, health, power):
         super().__init__(health, power)
         self.name = "Ogre"
+        self.bounty = 8
 
 hero1 = Hero(100,5)
-goblin1 = Goblin(100,2)
+goblin1 = Goblin(10,2)
 medic1 = Medic(100,2)
-shadow1 = Shadow(100,5)
-zombie1 = Zombie(20,2)
-ogre1 = Ogre(50,2)
+shadow1 = Shadow(1,5)
+zombie1 = Zombie(10,2)
+ogre1 = Ogre(20,2)
 
 def main(hero, enemy):
     while enemy.alive() and hero.alive():
@@ -137,4 +143,4 @@ def main(hero, enemy):
             enemy.attack(hero)
  
 
-main(hero1, ogre1)
+main(hero1, goblin1)
