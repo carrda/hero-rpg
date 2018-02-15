@@ -68,7 +68,10 @@ class Character:
             print("{} is dead.".format(enemy.name))
             self.coins += enemy.bounty
             print("{} collects {} bounty by defeating {}.".format(self.name, enemy.bounty, enemy.name))
-            print("{}'s coin balance is {}.".format(self.name, self.coins))        
+        
+            shopping.do_shopping(self)
+
+                   
         elif enemy.health <= 0 and enemy.name == "Zombie":
             print("{} never dies!".format(enemy.name))
         elif self.health <= 0:
@@ -82,6 +85,13 @@ class Hero(Character):
         super().__init__(health, power)
         self.name = "Hero"
         self.coins = 0
+
+    def buy(self, item):
+        self.coins -= item.cost
+        print("{} coin balance is {}.".format(self.name, self.coins))
+        print(item)
+        item.apply(self)
+        
 
 class Goblin(Character):
     def __init__ (self, health, power):
@@ -111,13 +121,46 @@ class Ogre(Character): # 30% of time damage hero a like amount
         self.name = "Ogre"
         self.bounty = 8
 
+
+
+class Tonic:
+    cost = 5
+    name = 'tonic'
+    def apply(self, character):
+        character.health = 10
+        print("{} health is now {}".format(character.name, character.health))
+
+class Store:
+    items = [Tonic()]
+    def do_shopping(self, hero):
+        
+        while True:
+            print("{} has {} coin balance.".format(hero.name, hero.coins))
+            print("What would you like to do?")
+            for i in range(0, len(Store.items)):
+                item = Store.items[i]
+                print("{}. buy {} for {} coins.".format(i +1, item.name, item.cost))
+
+            print("10. leave.")
+
+            answer = int(input("> "))
+
+            if answer == 10:
+                break
+            else:
+                itemToBuy = Store.items[answer - 1]
+                print(itemToBuy)
+                hero.buy(itemToBuy)
+
 hero1 = Hero(100,5)
 goblin1 = Goblin(10,2)
 medic1 = Medic(100,2)
 shadow1 = Shadow(1,5)
 zombie1 = Zombie(10,2)
 ogre1 = Ogre(20,2)
-
+shopping = Store()
+tonic = Tonic()
+            
 def main(hero, enemy):
     while enemy.alive() and hero.alive():
         hero.print_status()
