@@ -40,6 +40,7 @@ class Character:
 
        
         
+
         if self.name == "Hero":
             my_random = random.randint(1, 10)
             # 20% of time, double the damage
@@ -49,6 +50,14 @@ class Character:
                 enemy.health -= self.power
                 print("{} did double damage!".format(self.name))
                 damage_coefficient = 2
+        
+        if enemy.name == "Ogre":
+            my_random = random.randint(1, 10)
+            if my_random <= 3: 
+                self.health -= damage_coefficient * self.power
+
+                print("{} damaged additional {} points.".format(self.name, damage_coefficient * self.power))
+        
         print("{} does {} damage to the {}.".format(self.name, damage_coefficient * self.power, enemy.name))
         if enemy.name == "Medic":
             my_random = random.randint(1, 10)
@@ -91,11 +100,17 @@ class Zombie(Character):
         super().__init__(health, power)
         self.name = "Zombie"
 
+class Ogre(Character): # 30% of time damage hero a like amount
+    def __init__ (self, health, power):
+        super().__init__(health, power)
+        self.name = "Ogre"
+
 hero1 = Hero(100,5)
 goblin1 = Goblin(100,2)
 medic1 = Medic(100,2)
 shadow1 = Shadow(100,5)
 zombie1 = Zombie(20,2)
+ogre1 = Ogre(50,2)
 
 def main(hero, enemy):
     while enemy.alive() and hero.alive():
@@ -118,8 +133,8 @@ def main(hero, enemy):
         else:
             print("Invalid input {}".format(raw_input))
 
-        if enemy.health > 0:
+        if enemy.health > 0 or enemy.name == "Zombie":
             enemy.attack(hero)
  
 
-main(hero1, zombie1)
+main(hero1, ogre1)
